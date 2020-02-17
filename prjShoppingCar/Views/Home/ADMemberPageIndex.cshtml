@@ -1,0 +1,56 @@
+﻿@model IEnumerable<prjShoppingCar.Models.tMember>
+
+@{
+    ViewBag.Title = "ADMemberPageIndex";
+}
+
+<h2>ADMemberPageIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            會員帳號
+        </th>
+        <th>
+            會員密碼
+        </th>
+        <th>
+            會員名稱
+        </th>
+        <th>
+            會員信箱
+        </th>
+        <th>
+            帳號
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fPwd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fEmail)
+        </td>
+        <td>
+            <img src="~/images/@(item.fBanned).png" width="32" />
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "ADMemberPage", new { id = item.fId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.fId })
+        </td>
+    </tr>
+}
+
+</table>

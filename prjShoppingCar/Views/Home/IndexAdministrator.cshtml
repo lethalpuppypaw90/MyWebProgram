@@ -1,0 +1,237 @@
+﻿
+@{
+    ViewBag.Title = "呼叫WebApi進行非同步新增、修改、刪除";
+}
+
+<script>
+    $(function () {
+        var apiurl = "http://localhost:61971/api/Product";
+
+        $("#btnCreate").on("click", fnCreate);
+        $("#btnEdit").on("click", fnEdit);
+        $("#btnDelete").on("click", fnDelete);
+
+
+        fnLoadData();
+
+        function fnLoadData() {
+            $.ajax({
+                url: apiurl,
+                type: 'GET',
+                success: function (data) {
+                    $("#tableshow").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#tableshow").append
+                            (
+                            "<tr>" +
+                            "<td>" + data[i].fId + "</td>" +
+                            "<td>" + data[i].fPId + "</td>" +
+                            "<td>" + data[i].fName + "</td>" +
+                            "<td>" + data[i].fPrice + "</td>" +
+                            "<td>" + data[i].fImg + "</td>" +
+                            "<td><input type='button' value='選取' id='btnSelect" + i +
+                            "' class='btn btn-info' /></td>" +
+                            "</tr>"
+                            );
+                        $("#btnSelect" + i)
+                            .on("click", { fid: data[i].fId },
+                                fnSelectData);
+                    }
+                    $("#fid").val("");
+                    $("#fpid").val("");
+                    $("#fname").val("");
+                    $("#fprice").val("");
+                    $("#fimg").val("");
+                    $('#blah').attr('src', " ");
+                }
+            });
+        }
+        function fnSelectData(event) {
+            var fid = event.data.fid;
+            $.ajax({
+                url: apiurl + "?fid=" + encodeURI(fid),
+                type: 'GET',
+                success: function (data) {
+                    //$("#srcfimg").empty();
+                    $("#fid").val(data.fId);
+                    $("#fpid").val(data.fPId);
+                    $("#fname").val(data.fName);
+                    $("#fprice").val(data.fPrice);
+                    $("#fimg").val(data.fImg);
+                    //$("#srcfimg").append
+                    //    (
+                    //    "<img src = '/images/" + data.fImg + "' />"
+                    //)
+                    $('#blah').attr('src', '/images/' + data.fImg );
+                }
+            });
+        }
+        function fnCreate() {
+            var r = confirm("確定要新增嗎?");
+            if (r == true) {                
+                var fPId, fName, fPrice, fImg;
+                fPId = $("#fpid").val();
+                fName = $("#fname").val();
+                fPrice = $("#fprice").val();
+                fImg = $("#fimg").val();
+                var data = "?fpid=" + fPId + "&fname=" + fName
+                    + "&fprice=" + fPrice + "&fimg=" + fImg;
+                var data2 = new FormData();
+                var filesupload = $("#imgInp").get(0).files;
+                if (filesupload.length > 0) {
+                    data2.append("Uploadimgfiles", filesupload[0]);
+
+                }
+                $.ajax({
+                    url: apiurl + encodeURI(data),
+                    type: 'POST',
+                    data: data2,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result != 0) {
+                            alert("新增成功");
+                            fnLoadData();
+                        } else {
+                            alert("新增失敗");
+                        }
+                    }
+                });
+            }
+        }
+        function fnEdit() {
+            var r = confirm("確定要修改?")
+            if (r == true) {               
+                var fId, fPId, fName, fPrice, fImg;
+                fId = $("#fid").val();
+                fPId = $("#fpid").val();
+                fName = $("#fname").val();
+                fPrice = $("#fprice").val();
+                fImg = $("#fimg").val();
+                var data = "?fid=" + fId + "&fpid=" + fPId + "&fname=" + fName
+                    + "&fprice=" + fPrice + "&fimg=" + fImg;
+                var data2 = new FormData();
+                var filesupload = $("#imgInp").get(0).files;
+                if (filesupload.length > 0)
+                {
+                    data2.append("Uploadimgfiles", filesupload[0]);
+
+                }
+                $.ajax({
+                    url: apiurl + encodeURI(data),
+                    type: 'PUT',
+                    data: data2,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result != 0) {
+                            alert("修改成功");
+                            fnLoadData();
+                        } else {
+                            alert("修改失敗");
+                        }
+                    }
+                });
+            }
+        }
+        function fnDelete() {
+            var r = confirm("確定要刪除嗎?");
+            if (r == true) {
+                var fid = $("#fid").val();
+                $.ajax({
+                    url: apiurl + "?fid=" + encodeURI(fid),
+                    type: 'DELETE',
+                    success: function (result) {
+                        if (result != 0) {
+                            alert("刪除成功");
+                            fnLoadData();
+                        } else {
+                            alert("刪除失敗");
+                        }
+                    }
+                });
+            }
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+
+                    var filename = document.getElementById('imgInp').files[0].name;
+                    $("#fimg").val(filename);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+
+            }
+        }
+
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+
+    });
+
+</script>
+
+<h2>呼叫WebApi進行非同步新增、修改、刪除</h2>
+<div class="panel panel-primary">
+    <div class="panel-heading">商品管理</div>
+    <div class="panel-body">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="fid">編號</label>
+                <input type="text" class="form-control" id="fid" readonly />
+            </div>
+            <div class="form-group">
+                <label for="fpid">產品編號</label>
+                <input type="text" class="form-control" id="fpid" required />
+            </div>
+            <div class="form-group">
+                <label for="fname">品名</label>
+                <input type="text" class="form-control" id="fname" required />
+            </div>
+            <div class="form-group">
+                <label for="fprice">價格</label>
+                <input type="text" class="form-control" id="fprice" required />
+            </div>
+            <div class="form-group">
+                <label for="fimg">圖片</label>
+                <input type="text" class="form-control" id="fimg" readonly />
+            </div>
+
+            <input type="button" value="新增" id="btnCreate" class="btn btn-primary" />
+            <input type="button" value="修改" id="btnEdit" class="btn btn-success" />
+            <input type="button" value="刪除" id="btnDelete" class="btn btn-danger" />
+        </div>
+
+
+        <div class="col-md-4">
+            @*<div class="form-group" id="srcfimg">
+            </div>*@
+            <div>
+                <form method="post" enctype="multipart/form-data">
+                    <input type='file' id="imgInp" accept=".png, .jpg, .jpeg" />
+                    <img id="blah" width="200" height="200" />
+                </form>               
+            </div>
+        </div>
+       
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>編號</th>
+            <th>產品編號</th>
+            <th>品名</th>
+            <th>價格</th>
+            <th>圖片</th>
+        </tr>
+    </thead>
+    <tbody  id="tableshow">
+
+    </tbody>
+</table>
