@@ -65,12 +65,7 @@ namespace prjShoppingCar.Controllers
         }
         [HttpPost]
         public ActionResult ADMemberPage(int fid,string fuserid,string fpwd,string fname,string femail,string fbanned)
-        {
-            //if (Session["Member"] == null)
-            //{
-            //    var products = db.tProduct.ToList();
-            //    return View("Index", "_Layout", products);
-            //}
+        {       
             var adMember = db.tMember.Where(m => m.fId == fid).FirstOrDefault();
             adMember.fUserId = fuserid;
             adMember.fPwd = fpwd;
@@ -80,7 +75,7 @@ namespace prjShoppingCar.Controllers
             db.SaveChanges();
             return RedirectToAction("ADMemberPageIndex");
         }
-
+     
         //GET:Home/Login
         public ActionResult Login()
         {
