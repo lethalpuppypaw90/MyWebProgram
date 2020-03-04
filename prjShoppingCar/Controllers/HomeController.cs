@@ -115,6 +115,7 @@ namespace prjShoppingCar.Controllers
         }
         //POST:Home/Register
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(tMember pMember)
         {
             //若模型沒有通過驗證則顯示目前的view

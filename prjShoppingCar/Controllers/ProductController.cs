@@ -101,6 +101,13 @@ namespace prjShoppingCar.Controllers
             try
             {
                 var product = db.tProduct.Where(m => m.fId == fid).FirstOrDefault();
+                string fileName = product.fImg;
+                var deletefiles = Path.Combine(HttpContext.Current.Server.MapPath("~/images/"), fileName);
+                //刪除實體路徑檔案
+                if (fileName != "")
+                {
+                    File.Delete(deletefiles);
+                }
                 db.tProduct.Remove(product);
                 num = db.SaveChanges();
             }
