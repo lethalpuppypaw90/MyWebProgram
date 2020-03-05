@@ -65,7 +65,7 @@ namespace prjShoppingCar.Controllers
         }
 
         // PUT: api/Product/5
-        public int Put(int fid,string fPid, string fName, int fPrice, string fImg)
+        public int Put(int fid,string fPid, string fName, int fPrice, string fImg,string oldfImg)
         {
             int num = 1;
             
@@ -78,6 +78,9 @@ namespace prjShoppingCar.Controllers
                     {
                         var savefiles = Path.Combine(HttpContext.Current.Server.MapPath("~/images/"), imgfile.FileName);
                         imgfile.SaveAs(savefiles);
+                        var deletefiles = Path.Combine(HttpContext.Current.Server.MapPath("~/images/"), oldfImg);
+                        //刪除實體路徑檔案
+                        File.Delete(deletefiles);
                     }
                 }
                 var product = db.tProduct.Where(m => m.fId == fid).FirstOrDefault();

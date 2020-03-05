@@ -52,16 +52,12 @@
                 url: apiurl + "?fid=" + encodeURI(fid),
                 type: 'GET',
                 success: function (data) {
-                    //$("#srcfimg").empty();
                     $("#fid").val(data.fId);
                     $("#fpid").val(data.fPId);
                     $("#fname").val(data.fName);
                     $("#fprice").val(data.fPrice);
                     $("#fimg").val(data.fImg);
-                    //$("#srcfimg").append
-                    //    (
-                    //    "<img src = '/images/" + data.fImg + "' />"
-                    //)
+                    $("#oldfimg").val(data.fImg);
                     $('#blah').attr('src', '/images/' + data.fImg );
                 }
             });
@@ -95,7 +91,9 @@
                         } else {
                             alert("新增失敗");
                         }
-                    }
+                    },
+                    error: function () { alert("請輸入完整資料 "); }
+
                 });
             }
         }
@@ -108,8 +106,9 @@
                 fName = $("#fname").val();
                 fPrice = $("#fprice").val();
                 fImg = $("#fimg").val();
+                oldfImg = $("#oldfimg").val();
                 var data = "?fid=" + fId + "&fpid=" + fPId + "&fname=" + fName
-                    + "&fprice=" + fPrice + "&fimg=" + fImg;
+                    + "&fprice=" + fPrice + "&fimg=" + fImg +"&oldfimg=" + oldfImg;
                 var data2 = new FormData();
                 var filesupload = $("#imgInp").get(0).files;
                 if (filesupload.length > 0)
@@ -130,7 +129,8 @@
                         } else {
                             alert("修改失敗");
                         }
-                    }
+                    },
+                    error: function () { alert("請選擇修改資料 "); }
                 });
             }
         }
@@ -148,7 +148,8 @@
                         } else {
                             alert("刪除失敗");
                         }
-                    }
+                    },
+                    error: function () { alert("請選擇刪除資料 "); }
                 });
             }
         }
@@ -200,6 +201,7 @@
             <div class="form-group">
                 <label for="fimg">圖片</label>
                 <input type="text" class="form-control" id="fimg" readonly />
+                <input type="hidden" class="form-control" id="oldfimg" readonly />
             </div>
 
             <input type="button" value="新增" id="btnCreate" class="btn btn-primary" />
@@ -209,8 +211,6 @@
 
 
         <div class="col-md-4">
-            @*<div class="form-group" id="srcfimg">
-            </div>*@
             <div>
                 <form method="post" enctype="multipart/form-data">
                     <input type='file' id="imgInp" accept=".png, .jpg, .jpeg" />

@@ -13,7 +13,7 @@ namespace prjShoppingCar.Controllers
         //建立可存取dbShoppingCar.mdf 資料庫的dbShoppingCarEntities 類別物件db
         dbShoppingCarEntities db = new dbShoppingCarEntities();
 
-        // GET: Home
+        // GET:首頁
         public ActionResult Index()
         {
             //取得所有產品放入 products
@@ -39,6 +39,7 @@ namespace prjShoppingCar.Controllers
             //指定Index.cshtml 套用_LayoutMember.cshtml,View 使用products
             return View("Index", "_LayoutMember", products);
         }
+        // GET:管理者首頁
         public ActionResult ADMemberPageIndex()
         {
 
@@ -52,7 +53,7 @@ namespace prjShoppingCar.Controllers
             var memberADPage = Members.Where(m => pattern.IsMatch(m.fUserId));
             return View("ADMemberPageIndex", "_LayoutAdministrator", memberADPage);
         }
-
+        // GET:修改會員頁面
         public ActionResult ADMemberPage(int id)
         {
             var editlist = db.tMember.Where(m => m.fId == id).FirstOrDefault();
@@ -63,6 +64,7 @@ namespace prjShoppingCar.Controllers
             }
             return View("ADMemberPage", "_LayoutAdministrator", editlist);
         }
+        // POST:修改會員功能
         [HttpPost]
         public ActionResult ADMemberPage(int fid,string fuserid,string fpwd,string fname,string femail,string fbanned)
         {       
@@ -76,12 +78,12 @@ namespace prjShoppingCar.Controllers
             return RedirectToAction("ADMemberPageIndex");
         }
      
-        //GET:Home/Login
+        //GET:登入首頁
         public ActionResult Login()
         {
         return View();
         }
-        //POST:Home/Login
+        //POST:登入功能
         [HttpPost]
         public ActionResult Login(string fUserId,string fPwd)
         {
@@ -108,12 +110,12 @@ namespace prjShoppingCar.Controllers
             return RedirectToAction("Index");
         }
 
-        //GET:Home/Register
+        //GET:註冊首頁
         public ActionResult Register()
         {
             return View();
         }
-        //POST:Home/Register
+        //POST:註冊功能
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(tMember pMember)
@@ -143,14 +145,14 @@ namespace prjShoppingCar.Controllers
             return View();
         }
 
-        //GET:Index/Logout
+        //GET:登出
         public ActionResult Logout()
         {
             Session.Clear();    //清除Session變數
             return RedirectToAction("Index"); //執行Index 方法顯示產品列表
         }
 
-        //GET:Index/ShoppingCar
+        //GET:購物車首頁
         public ActionResult ShoppingCar()
         {
             //取得登入會員的帳號並指定給fUserId
@@ -163,7 +165,7 @@ namespace prjShoppingCar.Controllers
             return View("ShoppingCar", "_LayoutMember", orderDetails);
         }
 
-        //POST:Index/ShoppingCar
+        //POST:產生訂單
         [HttpPost]
         public ActionResult ShoppingCar(string fReceiver,string fEmail,string fAddress)
         {
@@ -199,7 +201,7 @@ namespace prjShoppingCar.Controllers
             return RedirectToAction("OrderList");
         }
 
-        //GET:Index/AddCar
+        //GET:加入購物車
         public ActionResult AddCar(string fPId)
         {
             //取得會員帳號並指定給fUserId
@@ -235,7 +237,7 @@ namespace prjShoppingCar.Controllers
             return RedirectToAction("ShoppingCar");
         }
 
-        //GET:Index/DeleteCar
+        //GET:刪除購物車
         public ActionResult DeleteCar(int fId)
         {
             //依fId找出要刪除購物車狀態的產品
@@ -248,7 +250,7 @@ namespace prjShoppingCar.Controllers
             return RedirectToAction("ShoppingCar");
         }
 
-        //GET:Home/OrderList
+        //GET:顯示訂單
         public ActionResult OrderList()
         {
             //找出會員帳號並指定給fUserId
@@ -262,7 +264,7 @@ namespace prjShoppingCar.Controllers
             return View("OrderList", "_LayoutMember", orders);
         }
 
-        //GET:Index/OrderDetail
+        //GET:訂單明細
         public ActionResult OrderDetail(string fOrderGuid)
         {
             //根據fOrderGuid找出和訂單主檔關聯的訂單明細,並指定給orderDetails
