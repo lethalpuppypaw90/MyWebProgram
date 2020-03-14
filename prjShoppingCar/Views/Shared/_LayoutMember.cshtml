@@ -7,7 +7,13 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-
+    @if (TempData["failConfirm"] != null)
+    {
+        <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["failConfirm"]));
+        alert(message);
+        </script>
+    }
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">

@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="LinePay_Class\LinePayClass.cs" />
     <Compile Include="Models\dbShoppingCarModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,6 +204,8 @@
     <Content Include="Views\Home\IndexAdministrator.cshtml" />
     <Content Include="Views\Home\ADMemberPage.cshtml" />
     <Content Include="Views\Home\ADMemberPageIndex.cshtml" />
+    <Content Include="Views\Home\Qqqtestqqq.cshtml" />
+    <Content Include="Views\Home\Qqqtestqqq121.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

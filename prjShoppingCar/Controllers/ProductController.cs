@@ -47,15 +47,20 @@ namespace prjShoppingCar.Controllers
                         var savefiles = Path.Combine(HttpContext.Current.Server.MapPath("~/images/"), imgfile.FileName);
                         imgfile.SaveAs(savefiles);
                     }
+
+                    tProduct product = new tProduct();
+                    product.fPId = fPid;
+                    product.fName = fName;
+                    product.fPrice = fPrice;
+                    product.fImg = fImg;
+                    db.tProduct.Add(product);
+
+                    num = db.SaveChanges();
                 }
-                tProduct product = new tProduct();
-                product.fPId = fPid;
-                product.fName = fName;
-                product.fPrice = fPrice;
-                product.fImg = fImg;
-                db.tProduct.Add(product);
-               
-                num = db.SaveChanges();
+                else
+                {
+                    num = 0;
+                }
             }
             catch(Exception ex)
             {

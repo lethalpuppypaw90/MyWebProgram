@@ -41,7 +41,8 @@
                     $("#fpid").val("");
                     $("#fname").val("");
                     $("#fprice").val("");
-                    $("#fimg").val("");
+                    $("#fimg").val("");                    
+                    $("#imgInp").val("");
                     $('#blah').attr('src', " ");
                 }
             });
@@ -89,7 +90,7 @@
                             alert("新增成功");
                             fnLoadData();
                         } else {
-                            alert("新增失敗");
+                            alert("新增失敗是否檔案沒上傳?");
                         }
                     },
                     error: function () { alert("請輸入完整資料 "); }
